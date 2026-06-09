@@ -1,3 +1,4 @@
+/* style.css */
 * {
     margin: 0;
     padding: 0;
@@ -12,19 +13,19 @@ body {
 }
 
 .container {
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
     background: white;
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     overflow: hidden;
 }
 
 header {
-    background: linear-gradient(135deg, #ff6b6b, #feca57);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    text-align: center;
     padding: 30px 20px;
+    text-align: center;
 }
 
 header h1 {
@@ -33,28 +34,26 @@ header h1 {
 }
 
 header p {
+    font-size: 0.9rem;
     opacity: 0.9;
-    font-size: 1rem;
 }
 
 .calculator-tabs {
     display: flex;
-    background: #f8f9fa;
+    background: #f0f0f0;
 }
 
 .tab-btn {
     flex: 1;
     padding: 15px;
     border: none;
-    background: none;
+    background: transparent;
     font-size: 1rem;
     font-weight: 600;
+    color: #666;
     cursor: pointer;
     transition: all 0.3s;
-}
-
-.tab-btn:hover {
-    background: #e9ecef;
+    font-family: 'Poppins', sans-serif;
 }
 
 .tab-btn.active {
@@ -63,13 +62,23 @@ header p {
     border-bottom: 3px solid #667eea;
 }
 
+.tab-btn:hover:not(.active) {
+    background: rgba(102, 126, 234, 0.1);
+}
+
 .tab-content {
     display: none;
-    padding: 30px 25px;
+    padding: 25px 20px;
 }
 
 .tab-content.active {
     display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .input-group {
@@ -78,96 +87,167 @@ header p {
 
 .input-group label {
     display: block;
-    margin-bottom: 8px;
     font-weight: 600;
     color: #333;
+    margin-bottom: 8px;
 }
 
-.input-group input {
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper input {
     width: 100%;
-    padding: 15px;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    transition: border-color 0.3s;
+    padding: 15px 45px 15px 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    font-family: 'Poppins', sans-serif;
 }
 
-.input-group input:focus {
+.input-wrapper input:focus {
     outline: none;
     border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+}
+
+.input-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 5px;
 }
 
 .calc-btn {
     width: 100%;
     padding: 18px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s;
+    font-family: 'Poppins', sans-serif;
 }
 
 .calc-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
 .calc-btn:active {
     transform: translateY(0);
 }
 
-/* ✅ PERBAIKAN: Biarkan JS handle styling */
 .hasil {
-    margin: 25px 0;
-    min-height: 60px;
-    border-radius: 12px;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    background: #f8f9fa;
+    min-height: 100px;
 }
 
+/* Simbol Panel */
+.simbol-panel {
+    margin: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+}
+
+.simbol-panel h4 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.simbol-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.simbol-btn {
+    padding: 12px;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.simbol-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.simbol-info {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+}
+
+/* Contoh */
 .contoh {
-    background: #f8f9fa;
-    padding: 25px;
-    border-top: 1px solid #e9ecef;
+    margin: 20px;
+    padding: 20px;
+    background: #fff3cd;
+    border-radius: 15px;
+    border-left: 5px solid #ffc107;
 }
 
 .contoh h3 {
-    color: #333;
+    color: #856404;
     margin-bottom: 15px;
-    font-size: 1.1rem;
 }
 
 .contoh-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
-    font-size: 0.9rem;
 }
 
-.contoh-grid div {
+.contoh-item {
     background: white;
-    padding: 12px;
-    border-radius: 8px;
-    border-left: 4px solid #667eea;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    color: #333;
 }
 
+/* Active input field styling */
+.input-wrapper input:focus + .input-icon {
+    color: #667eea;
+}
+
+/* Responsive */
 @media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-    
-    .contoh-grid {
-        grid-template-columns: 1fr;
+    .container {
+        border-radius: 0;
     }
     
     header h1 {
         font-size: 1.5rem;
     }
     
-    .container {
-        margin: 10px;
-        border-radius: 15px;
+    .simbol-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
 }
