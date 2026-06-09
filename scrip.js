@@ -1,4 +1,4 @@
-// ================= PARSE AKAR & PANGKAT =================
+// ================= PARSE INPUT =================
 
 function parseInput(input){
 
@@ -6,68 +6,34 @@ function parseInput(input){
         return NaN;
     }
 
-
     let expr = input.trim();
 
     expr = expr.replace(/\s+/g,"");
 
 
-
-    // AKAR KUADRAT √
-
-    expr = expr.replace(
-        /√(\d+(\.\d+)?)/g,
-        "Math.sqrt($1)"
-    );
+    // akar √
+    expr = expr.replace(/√/g,"Math.sqrt");
 
 
     // sqrt()
-
-    expr = expr.replace(
-        /sqrt\((.*?)\)/gi,
-        "Math.sqrt($1)"
-    );
+    expr = expr.replace(/sqrt/gi,"Math.sqrt");
 
 
-
-    // AKAR PANGKAT
-
-    expr = expr.replace(
-        /³√(\d+)/g,
-        "Math.pow($1,1/3)"
-    );
+    // akar pangkat
+    expr = expr.replace(/³√(\d+)/g,"Math.pow($1,1/3)");
+    expr = expr.replace(/⁴√(\d+)/g,"Math.pow($1,1/4)");
+    expr = expr.replace(/⁵√(\d+)/g,"Math.pow($1,1/5)");
 
 
-    expr = expr.replace(
-        /⁴√(\d+)/g,
-        "Math.pow($1,1/4)"
-    );
-
-
-    expr = expr.replace(
-        /⁵√(\d+)/g,
-        "Math.pow($1,1/5)"
-    );
-
-
-
-    // PANGKAT
-
-    expr = expr.replace(
-        /\^/g,
-        "**"
-    );
-
+    // pangkat
+    expr = expr.replace(/\^/g,"**");
 
 
     try{
 
-        return Function(
-            "return "+expr
-        )();
+        return Function("return "+expr)();
 
-
-    }catch(e){
+    }catch(error){
 
         return NaN;
 
@@ -77,10 +43,7 @@ function parseInput(input){
 
 
 
-
-
 // ================= HITUNG BARIS =================
-
 
 function hitungBaris(){
 
@@ -107,37 +70,37 @@ function hitungBaris(){
     if(isNaN(a)||isNaN(r)||isNaN(n)){
 
         document.getElementById("hasil").innerHTML =
-        "❌ Input tidak valid";
+        "Input tidak valid";
 
         return;
+
     }
 
 
 
-    let pangkat=n-1;
+    let un = a * Math.pow(r,n-1);
 
 
-    let un =
-    a*Math.pow(r,pangkat);
-
-
-
-    let akar =
-    Math.sqrt(un);
+    let akar = Math.sqrt(un);
 
 
 
     document.getElementById("hasil").innerHTML = `
 
 
-<h2>📌 Hasil Baris Geometri</h2>
+<h2>Hasil Perhitungan</h2>
 
+Diketahui:
 
-<b>Diketahui:</b><br>
+<br>
 
-a = ${aText}<br>
+a = ${aText}
 
-r = ${rText}<br>
+<br>
+
+r = ${rText}
+
+<br>
 
 n = ${n}
 
@@ -145,45 +108,39 @@ n = ${n}
 <br><br>
 
 
-<b>Rumus:</b><br>
+Rumus:
 
-Un = a × r⁽ⁿ⁻¹⁾
+<br>
+
+Un = a x r^(n-1)
 
 
 <br><br>
 
 
-<b>Penyelesaian:</b><br>
+Penyelesaian:
+
+<br>
 
 
-U${n} = ${aText} × (${rText})⁽${n}-1⁾
+U${n} = ${aText} x (${rText})^(${n}-1)
 
 
 <br>
 
 
-U${n} = ${un.toFixed(2)}
+U${n} = ${un}
 
 
 <br><br>
 
 
-<b>Akar:</b><br>
-
-
-√U${n} = √${un.toFixed(2)}
-
+Akar:
 
 <br>
-
 
 √U${n} = ${akar.toFixed(2)}
 
-
-
-<h3>
-✅ Hasil Akhir = ${un.toFixed(2)}
-</h3>
 
 `;
 
@@ -191,78 +148,53 @@ U${n} = ${un.toFixed(2)}
 
 
 
-
-
-// ================= HITUNG DERET =================
+// ================= DERET =================
 
 
 function hitungDeret(){
 
 
-let a =
-parseInput(document.getElementById("deret_a").value);
+let a=parseInput(
+document.getElementById("deret_a").value
+);
 
 
-let r =
-parseInput(document.getElementById("deret_r").value);
+let r=parseInput(
+document.getElementById("deret_r").value
+);
 
 
-let n =
-Number(document.getElementById("deret_n").value);
-
-
-
-if(isNaN(a)||isNaN(r)||isNaN(n)){
-
-document.getElementById("hasil").innerHTML=
-"❌ Input tidak valid";
-
-return;
-
-}
+let n=Number(
+document.getElementById("deret_n").value
+);
 
 
 
-let sn;
+let hasil;
 
 
 if(r==1){
 
-sn=a*n;
+hasil=a*n;
 
 }else{
 
-sn=
-a*(Math.pow(r,n)-1)/(r-1);
+hasil=a*(Math.pow(r,n)-1)/(r-1);
 
 }
 
 
 
-document.getElementById("hasil").innerHTML=`
+document.getElementById("hasil").innerHTML=
 
-<h2>📌 Hasil Deret</h2>
+"Sn = "+hasil;
 
-
-<b>Rumus:</b><br>
-
-Sn = a(rⁿ-1)/(r-1)
-
-
-<br><br>
-
-
-S${n} = ${sn.toFixed(2)}
-
-`;
 
 }
 
 
 
-
-
-// ================= TOMBOL SIMBOL =================
+// ================= SIMBOL =================
 
 
 function insertSimbol(simbol){
@@ -273,17 +205,11 @@ let input=document.activeElement;
 
 if(input.tagName=="INPUT"){
 
-
 input.value += simbol;
 
-input.focus();
-
-
 }
 
 }
-
-
 
 
 
@@ -293,17 +219,11 @@ input.focus();
 function switchTab(tab){
 
 
-document.querySelectorAll(".tab-content")
-.forEach(function(x){
-
-x.classList.remove("active");
-
-});
+let tabs =
+document.querySelectorAll(".tab-content");
 
 
-
-document.querySelectorAll(".tab-btn")
-.forEach(function(x){
+tabs.forEach(function(x){
 
 x.classList.remove("active");
 
@@ -313,8 +233,6 @@ x.classList.remove("active");
 
 document.getElementById(tab+"-tab")
 .classList.add("active");
-
-event.target.classList.add("active");
 
 
 }
