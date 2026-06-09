@@ -1,4 +1,3 @@
-/* style.css */
 * {
     margin: 0;
     padding: 0;
@@ -7,38 +6,33 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     min-height: 100vh;
     padding: 20px;
 }
 
 .container {
-    max-width: 600px;
+    max-width: 500px;
     margin: 0 auto;
     background: white;
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
 
 header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
-    padding: 30px 20px;
+    padding: 25px;
     text-align: center;
+    border-radius: 20px 20px 0 0;
 }
 
 header h1 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
 }
 
-header p {
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-.calculator-tabs {
+.tabs {
     display: flex;
     background: #f0f0f0;
 }
@@ -48,12 +42,10 @@ header p {
     padding: 15px;
     border: none;
     background: transparent;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: #666;
     cursor: pointer;
-    transition: all 0.3s;
-    font-family: 'Poppins', sans-serif;
 }
 
 .tab-btn.active {
@@ -62,192 +54,91 @@ header p {
     border-bottom: 3px solid #667eea;
 }
 
-.tab-btn:hover:not(.active) {
-    background: rgba(102, 126, 234, 0.1);
-}
-
 .tab-content {
     display: none;
-    padding: 25px 20px;
+    padding: 20px;
 }
 
 .tab-content.active {
     display: block;
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .input-group label {
     display: block;
     font-weight: 600;
     color: #333;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
-.input-wrapper {
-    position: relative;
-}
-
-.input-wrapper input {
+.input-group input {
     width: 100%;
-    padding: 15px 45px 15px 15px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    font-size: 1rem;
-    transition: all 0.3s;
-    font-family: 'Poppins', sans-serif;
-}
-
-.input-wrapper input:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-}
-
-.input-icon {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.2rem;
-}
-
-.input-hint {
-    display: block;
-    font-size: 0.75rem;
-    color: #888;
-    margin-top: 5px;
-}
-
-.calc-btn {
-    width: 100%;
-    padding: 18px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-family: 'Poppins', sans-serif;
-}
-
-.calc-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-}
-
-.calc-btn:active {
-    transform: translateY(0);
-}
-
-.hasil {
-    margin: 20px;
-    padding: 20px;
-    border-radius: 15px;
-    background: #f8f9fa;
-    min-height: 100px;
-}
-
-/* Simbol Panel */
-.simbol-panel {
-    margin: 20px;
-    padding: 20px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 15px;
-}
-
-.simbol-panel h4 {
-    color: #333;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.simbol-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.simbol-btn {
     padding: 12px;
-    background: white;
     border: 2px solid #ddd;
     border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-family: inherit;
 }
 
-.simbol-btn:hover {
-    background: #667eea;
-    color: white;
+.input-group input:focus {
+    outline: none;
     border-color: #667eea;
 }
 
-.simbol-info {
-    font-size: 0.8rem;
-    color: #666;
-    text-align: center;
+button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-/* Contoh */
-.contoh {
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+}
+
+#hasil {
     margin: 20px;
     padding: 20px;
-    background: #fff3cd;
-    border-radius: 15px;
-    border-left: 5px solid #ffc107;
-}
-
-.contoh h3 {
-    color: #856404;
-    margin-bottom: 15px;
-}
-
-.contoh-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-}
-
-.contoh-item {
-    background: white;
-    padding: 15px;
+    background: #f5f5f5;
     border-radius: 10px;
-    font-size: 0.85rem;
-    color: #333;
+    min-height: 50px;
 }
 
-/* Active input field styling */
-.input-wrapper input:focus + .input-icon {
-    color: #667eea;
+.symbols {
+    margin: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-    .container {
-        border-radius: 0;
-    }
-    
-    header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .simbol-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
+.symbols h4 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.symbol-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.symbol-grid button {
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+.hint {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 10px;
 }
