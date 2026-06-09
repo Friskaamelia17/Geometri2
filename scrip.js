@@ -1,4 +1,5 @@
-// Fungsi untuk解析 expressions matematika (akar dan pangkat)
+// ============ FUNGSI PARSING EXPRESSIONS MATEMATIKA ============
+
 function parseInput(input) {
     if (!input || input.trim() === '') return NaN;
     
@@ -7,10 +8,20 @@ function parseInput(input) {
     // Ganti semua spasi
     expr = expr.replace(/\s+/g, '');
     
+    // Handle berbagai format akar:
+    // 1. √16 → 16^(1/2)
+    // 2. sqrt(16) → 16^(1/2)
+    // 3. √ 16 → 16^(1/2)
+    
     // Handle akar kuadrat: √x → x^(1/2)
-    // Contoh: √4, √16, √25
     expr = expr.replace(/√(\d+(\.\d+)?)/g, '($1)^(1/2)');
-    expr = expr.replace(/√\$(\d+(\.\d+)?)\$/g, '($1)^(1/2)');
+    expr = expr.replace(/√(\$[^)]+\$)/, (match, inner) => {
+        return `(${inner})^(1/2)`;
+    });
+    
+    // Handle sqrt(x) → x^(1/2)
+    expr = expr.replace(/sqrt(\d+(\.\d+)?)/gi, '($1)^(1/2)');
+    expr = expr.replace(/sqrt(\$[^)]+\$)/gi, (match, inner) => `(${inner})^(1/2)`);
     
     // Handle akar pangkat n: ⁿ√x → x^(1/n)
     // Contoh: ³√8, ⁴√16
@@ -29,7 +40,8 @@ function parseInput(input) {
     return evaluateMath(expr);
 }
 
-// Fungsi untuk mengevaluasi ekspresi matematika dengan aman
+// ============ FUNGSI EVALUASI MATEMATIKA ============
+
 function evaluateMath(expr) {
     try {
         // Ganti operasi matematika ke format JavaScript
@@ -55,14 +67,6 @@ function evaluateMath(expr) {
             return NaN;
         }
         
-        // Hitung hasil (Gunakan Function constructor untuk keamanan)
-        const allowedChars = '0123456789.+-*/()Mathpow ';
-        for (let char of evalExpr) {
-            if (!allowedChars.includes(char)) {
-                return NaN;
-            }
-        }
-        
         // Evaluate dengan cara aman
         const result = new Function('return ' + evalExpr)();
         return result;
@@ -73,21 +77,8 @@ function evaluateMath(expr) {
     }
 }
 
-// ============ MODIFIKASI FUNGSI HITUNG ============
+// ============ FUNGSI HITUNG BARIS GEOMETRI ============
 
-function switchTab(tabName) {
-    // Switch tab aktif
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    
-    event.target.classList.add('active');
-    document.getElementById(tabName + '-tab').classList.add('active');
-    
-    // Clear hasil
-    document.getElementById('hasil').innerHTML = '';
-}
-
-// Hitung Baris Geometri: Un = a * r^(n-1)
 function hitungBaris() {
     const aInput = document.getElementById('suku1').value;
     const rInput = document.getElementById('rasio').value;
@@ -98,7 +89,7 @@ function hitungBaris() {
     const r = parseInput(rInput);
     
     if (isNaN(a) || isNaN(r) || isNaN(n) || n <= 0) {
-        document.getElementById('hasil').innerHTML = '❌ Masukkan angka atau ekspresi matematika yang valid!<br><small>Contoh: √4, 2^3, ³√8</small>';
+        document.getElementById('hasil').innerHTML = '❌ Masukkan angka atau ekspresi matematika yang valid!<br><small>Contoh: √4, sqrt(4), 2^3, ³√8</small>';
         return;
     }
     
@@ -163,7 +154,8 @@ function hitungBaris() {
     document.getElementById('hasil').innerHTML = penjelasan;
 }
 
-// Hitung Deret Geometri: Sn = a * (r^n - 1) / (r - 1)
+// ============ FUNGSI HITUNG DERET GEOMETRI ============
+
 function hitungDeret() {
     const aInput = document.getElementById('deret_a').value;
     const rInput = document.getElementById('deret_r').value;
@@ -174,7 +166,7 @@ function hitungDeret() {
     const r = parseInput(rInput);
     
     if (isNaN(a) || isNaN(r) || isNaN(n) || n <= 0) {
-        document.getElementById('hasil').innerHTML = '❌ Masukkan angka atau ekspresi matematika yang valid!<br><small>Contoh: √4, 2^3, ³√8</small>';
+        document.getElementById('hasil').innerHTML = '❌ Masukkan angka atau ekspresi matematika yang valid!<br><small>Contoh: √4, sqrt(4), 2^3, ³√8</small>';
         return;
     }
     
@@ -265,3 +257,8 @@ function hitungDeret() {
                                 S<sub>${n}</sub> = ${a} × (${r}<sup>${n}</sup> - 1)/( ${r} - 1)
                             </span>
                         </div>
+                        
+                        <div style="text-align: center; margin: 10px 0;">
+                            <span style="display: block; font-size: 1.3rem; margin: 8px 0;">
+                                S<sub>${n}</sub> = ${a} × (${rn.toLocaleString('id-ID', {maximumFractionDigits: 4})} - 1)/(${r} - 1)
+                            </
