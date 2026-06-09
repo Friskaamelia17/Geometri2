@@ -1,39 +1,24 @@
-// ================= PARSE INPUT =================
-
 function parseInput(input){
 
-    if(!input || input.trim()==""){
-        return NaN;
+    if(input==""){
+        return 0;
     }
 
-    let expr = input.trim();
 
-    expr = expr.replace(/\s+/g,"");
-
-
-    // akar √
-    expr = expr.replace(/√/g,"Math.sqrt");
+    let nilai = input;
 
 
-    // sqrt()
-    expr = expr.replace(/sqrt/gi,"Math.sqrt");
+    nilai = nilai.replace(/√/g,"Math.sqrt");
 
 
-    // akar pangkat
-    expr = expr.replace(/³√(\d+)/g,"Math.pow($1,1/3)");
-    expr = expr.replace(/⁴√(\d+)/g,"Math.pow($1,1/4)");
-    expr = expr.replace(/⁵√(\d+)/g,"Math.pow($1,1/5)");
-
-
-    // pangkat
-    expr = expr.replace(/\^/g,"**");
+    nilai = nilai.replace(/\^/g,"**");
 
 
     try{
 
-        return Function("return "+expr)();
+        return Function("return "+nilai)();
 
-    }catch(error){
+    }catch(e){
 
         return NaN;
 
@@ -43,34 +28,35 @@ function parseInput(input){
 
 
 
-// ================= HITUNG BARIS =================
 
 function hitungBaris(){
 
 
-    let aText =
-    document.getElementById("suku1").value;
+    let aInput = document.getElementById("suku1").value;
 
+    let rInput = document.getElementById("rasio").value;
 
-    let rText =
-    document.getElementById("rasio").value;
-
-
-    let n =
-    Number(document.getElementById("n").value);
+    let n = Number(document.getElementById("n").value);
 
 
 
-    let a=parseInput(aText);
+    let a = parseInput(aInput);
 
-    let r=parseInput(rText);
+    let r = parseInput(rInput);
 
 
 
-    if(isNaN(a)||isNaN(r)||isNaN(n)){
+    let hasil = document.getElementById("hasil");
 
-        document.getElementById("hasil").innerHTML =
-        "Input tidak valid";
+
+
+    if(isNaN(a) || isNaN(r) || n==""){
+
+
+        hasil.innerHTML =
+
+        "❌ Input belum benar";
+
 
         return;
 
@@ -85,22 +71,17 @@ function hitungBaris(){
 
 
 
-    document.getElementById("hasil").innerHTML = `
+    hasil.innerHTML = `
 
 
 <h2>Hasil Perhitungan</h2>
 
-Diketahui:
 
-<br>
+<b>Diketahui:</b><br>
 
-a = ${aText}
+a = ${aInput}<br>
 
-<br>
-
-r = ${rText}
-
-<br>
+r = ${rInput}<br>
 
 n = ${n}
 
@@ -108,22 +89,18 @@ n = ${n}
 <br><br>
 
 
-Rumus:
+<b>Rumus:</b><br>
 
-<br>
-
-Un = a x r^(n-1)
+Un = a × r^(n-1)
 
 
 <br><br>
 
 
-Penyelesaian:
-
-<br>
+<b>Penyelesaian:</b><br>
 
 
-U${n} = ${aText} x (${rText})^(${n}-1)
+U${n} = ${aInput} × (${rInput})^(${n}-1)
 
 
 <br>
@@ -135,72 +112,35 @@ U${n} = ${un}
 <br><br>
 
 
-Akar:
+<b>Akar Suku ke-${n}</b><br>
 
-<br>
 
 √U${n} = ${akar.toFixed(2)}
 
 
+<br><br>
+
+
+<h3>
+Jawaban = ${un}
+</h3>
+
+
 `;
 
-}
-
-
-
-// ================= DERET =================
-
-
-function hitungDeret(){
-
-
-let a=parseInput(
-document.getElementById("deret_a").value
-);
-
-
-let r=parseInput(
-document.getElementById("deret_r").value
-);
-
-
-let n=Number(
-document.getElementById("deret_n").value
-);
-
-
-
-let hasil;
-
-
-if(r==1){
-
-hasil=a*n;
-
-}else{
-
-hasil=a*(Math.pow(r,n)-1)/(r-1);
-
-}
-
-
-
-document.getElementById("hasil").innerHTML=
-
-"Sn = "+hasil;
 
 
 }
 
 
 
-// ================= SIMBOL =================
+
 
 
 function insertSimbol(simbol){
 
 
-let input=document.activeElement;
+let input = document.activeElement;
 
 
 if(input.tagName=="INPUT"){
@@ -213,22 +153,16 @@ input.value += simbol;
 
 
 
-// ================= TAB =================
-
 
 function switchTab(tab){
 
 
-let tabs =
-document.querySelectorAll(".tab-content");
-
-
-tabs.forEach(function(x){
+document.querySelectorAll(".tab-content")
+.forEach(function(x){
 
 x.classList.remove("active");
 
 });
-
 
 
 document.getElementById(tab+"-tab")
