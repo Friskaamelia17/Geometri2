@@ -1,135 +1,104 @@
-// ============ FUNGSI PARSING INPUT ============
+// script.js - Complete Fixed Version
+
+// ============ FUNGSI PARSING EXPRESSIONS MATEMATIKA ============
+
 function parseInput(input) {
     if (!input || input.trim() === '') return NaN;
     
-    var expr = input.trim().replace(/\s+/g, '');
+    let expr = input.trim();
     
-    // Handle sqrt(x) -> x^(1/2)
+    // Ganti semua spasi
+    expr = expr.replace(/\s+/g, '');
+    
+    // Debug: console.log("Input:", expr);
+    
+    // Handle berbagai format akar:
+    
+    // 1. Handle akar kuadrat: √x → x^(1/2)
+    // Sebelum: √16 → (16)^(1/2)
+    // Setelah: (16)^(1/2) → Math.pow(16, 1/2) = 4
+    expr = expr.replace(/√(\d+(\.\d+)?)/g, '($1)^(1/2)');
+    
+    // 2. Handle sqrt(x) → x^(1/2)
     expr = expr.replace(/sqrt(\d+(\.\d+)?)/gi, '($1)^(1/2)');
     
-    // Handle nsqrt(x) -> x^(1/n)
-    expr = expr.replace(/(\d+)sqrt(\d+)/gi, '($2)^(1/$1)');
+    // 3. Handle akar pangkat n: ⁿ√x → x^(1/n)
+    // Contoh: ³√8 = 8^(1/3), ⁴√16 = 16^(1/4)
+    expr = expr.replace(/(\d+)√(\d+(\.\d+)?)/g, '($2)^(1/$1)');
+    
+    // 4. Handle sqrt dengan parentheses: sqrt(x) → x^(1/2)
+    expr = expr.replace(/sqrt(\$[^)]+\$)/gi, (match, inner) => {
+        return `(${inner})^(1/2)`;
+    });
+    
+    // 5. Handle pangkat sederhana: x^y
+    // Tidak perlu diubah, akan dihandle oleh evaluateMath
+    
+    // console.log("Setelah parse akar:", expr);
     
     return evaluateMath(expr);
 }
 
 // ============ FUNGSI EVALUASI MATEMATIKA ============
+
 function evaluateMath(expr) {
     try {
-        var evalExpr = expr.replace(/(\d+(\.\d+)?)\^(\d+(\.\d+)?|\$[^)]+\$|\d+\/\d+)/g, 
-            function(m, base, _, exp) {
-                var expVal = exp;
-                if (exp.includes('/')) {
-                    var p = exp.split('/');
-                    expVal = parseFloat(p[0]) / parseFloat(p[1]);
-                } else if (exp.charAt(0) === '(' && exp.charAt(exp.length-1) === ')') {
-                    var inner = exp.slice(1, -1);
-                    if (/^[\d.]+$/.test(inner)) expVal = inner;
-                }
-                return 'Math.pow(' + base + ',' + expVal + ')';
-            }
-        );
+        let evalExpr = expr;
         
-        var allowed = '0123456789.+-*/()Mathpow ';
-        for (var i = 0; i < evalExpr.length; i++) {
-            if (allowed.indexOf(evalExpr[i]) === -1) return NaN;
+        // Handle pangkat (^)
+        // Ubah a^(b) menjadi Math.pow(a, b)
+        // Regex: angka^(angka) atau angka^(1/angka)
+        evalExpr = evalExpr.replace(/(\d+(\.\d+)?)\^(\d+(\.\d+)?|\$[^)]+\$|\d+\/\d+)/g, (match, base, _, exp) => {
+            // Cek apakah exp adalah pecahan like 1/2
+            let expValue = exp;
+            
+            if (exp.includes('/')) {
+                // Ini adalah pecahan seperti 1/2, 1/3, dll
+                // Kita perlu hitung nilainya
+                let parts = exp.split('/');
+                expValue = parseFloat(parts[0]) / parseFloat(parts[1]);
+            } else if (exp.startsWith('(') && exp.endsWith(')')) {
+                // Ini adalah expression dalam parentheses
+                // Recursive evaluation bisa dilakukan tapi perlu hati-hati
+                // Untuk saat ini gunakan langsung
+                let inner = exp.slice(1, -1);
+                // Coba parsing jika inner adalah angka atau operasi sederhana
+                if (/^[\d.\/]+$/.test(inner)) {
+                    // Ini adalah pecahan seperti 1/2
+                    let parts = inner.split('/');
+                    expValue = parseFloat(parts[0]) / parseFloat(parts[1]);
+                } else {
+                    expValue = exp; // Biarkan apa adanya
+                }
+            }
+            
+            return `Math.pow(${base},${expValue})`;
+        });
+        
+        // console.log("Sesudah replace pow:", evalExpr);
+        
+        // Validasi hanya angka dan operasi yang diizinkan
+        const allowedChars = '0123456789.+-*/()Mathpow ';
+        for (let char of evalExpr) {
+            if (!allowedChars.includes(char) && char !== ' ') {
+                console.log("Karakter tidak diizinkan:", char);
+                return NaN;
+            }
         }
         
-        var result = new Function('return ' + evalExpr)();
-        return isNaN(result) || !isFinite(result) ? NaN : result;
+        // Evaluate dengan cara aman
+        const result = new Function('return ' + evalExpr)();
+        
+        if (isNaN(result) || !isFinite(result)) {
+            return NaN;
+        }
+        
+        return result;
+        
     } catch (e) {
+        console.error("Error parsing:", e);
         return NaN;
     }
 }
 
-// ============ SWITCH TAB ============
-function switchTab(tabName) {
-    var buttons = document.querySelectorAll('.tab-btn');
-    var contents = document.querySelectorAll('.tab-content');
-    
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove('active');
-    }
-    for (var i = 0; i < contents.length; i++) {
-        contents[i].classList.remove('active');
-    }
-    
-    // Find button by data-tab attribute
-    for (var i = 0; i < buttons.length; i++) {
-        if (buttons[i].getAttribute('data-tab') === tabName) {
-            buttons[i].classList.add('active');
-        }
-    }
-    
-    document.getElementById(tabName + '-tab').classList.add('active');
-    document.getElementById('hasil').innerHTML = '';
-}
-
-// Add click handlers to tabs
-document.addEventListener('DOMContentLoaded', function() {
-    var tabs = document.querySelectorAll('.tab-btn');
-    for (var i = 0; i < tabs.length; i++) {
-        tabs[i].addEventListener('click', function() {
-            var tabName = this.getAttribute('data-tab');
-            switchTab(tabName);
-        });
-    }
-});
-
-// ============ INSERT SIMBOL ============
-function insertSimbol(sym) {
-    var inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
-    var active = null;
-    
-    for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i] === document.activeElement) {
-            active = inputs[i];
-            break;
-        }
-    }
-    
-    if (!active) {
-        var visibleInputs = document.querySelectorAll('.tab-content.active input[type="text"]');
-        if (visibleInputs.length > 0) {
-            active = visibleInputs[0];
-        }
-    }
-    
-    if (active) {
-        var pos = active.selectionStart;
-        var val = active.value;
-        active.value = val.substring(0, pos) + sym + val.substring(pos);
-        active.focus();
-        active.setSelectionRange(pos + sym.length, pos + sym.length);
-    }
-}
-
-// ============ HITUNG BARIS GEOMETRI ============
-function hitungBaris() {
-    var aInput = document.getElementById('suku1').value;
-    var rInput = document.getElementById('rasio').value;
-    var n = parseInt(document.getElementById('n').value);
-    
-    var a = parseInput(aInput);
-    var r = parseInput(rInput);
-    
-    if (isNaN(a) || isNaN(r) || isNaN(n) || n <= 0) {
-        document.getElementById('hasil').innerHTML = 
-            '<div style="background: #ffcccc; padding: 20px; border-radius: 15px; border-left: 5px solid #ff0000;">' +
-            '<h3 style="color: #ff0000; margin-bottom: 10px;"><i class="fas fa-exclamation-circle"></i> Input Tidak Valid</h3>' +
-            '<p>Masukkan angka atau ekspresi matematika yang valid!</p>' +
-            '<p style="margin-top: 10px;"><strong>Contoh:</strong></p>' +
-            '<ul style="margin-left: 20px; color: #666;">' +
-            '<li>sqrt(4) = 2</li>' +
-            '<li>2^3 = 8</li>' +
-            '<li>3sqrt(8) = 2</li>' +
-            '</ul>' +
-            '</div>';
-        return;
-    }
-    
-    var un = a * Math.pow(r, n - 1);
-    
-    var penjelasan = 
-        '<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">' +
-        '<h3 style="text-align: center; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0
+// ============ FUN
