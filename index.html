@@ -4,15 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator Baris & Deret Geometri</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .calculator-tabs {
+            display: flex;
+            background: #f0f0f0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .calc-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .simbol-panel {
+            margin: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .simbol-panel h4 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .simbol-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .simbol-btn {
+            padding: 12px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .simbol-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .contoh {
+            margin: 20px;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 15px;
+            border-left: 5px solid #ffc107;
+        }
+
+        .contoh h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>🧮 Kalkulator Baris & Deret Geometri</h1>
-            <p>Hitung dengan mudah dan akurat! Mendukung √ akar dan pangkat</p>
+            <p>Mendukung √ akar dan pangkat ^</p>
         </header>
 
         <div class="calculator-tabs">
@@ -24,26 +188,15 @@
         <div id="baris-tab" class="tab-content active">
             <div class="input-group">
                 <label>Suku Pertama (a):</label>
-                <div class="input-wrapper">
-                    <input type="text" id="suku1" placeholder="Contoh: 2, √4, 2^3, ³√8" autocomplete="off">
-                    <span class="input-icon">📝</span>
-                </div>
-                <small class="input-hint">Bisa gunakan: √4, sqrt(4), 2^3, ³√8, 4^(1/2)</small>
+                <input type="text" id="suku1" placeholder="Contoh: 2, √4, 2^3">
             </div>
             <div class="input-group">
                 <label>Rasio (r):</label>
-                <div class="input-wrapper">
-                    <input type="text" id="rasio" placeholder="Contoh: 3, √9, 2^2, ⁴√16" autocomplete="off">
-                    <span class="input-icon">📝</span>
-                </div>
-                <small class="input-hint">Bisa gunakan: √9, sqrt(9), 2^2, ⁴√16, 4^(1/2)</small>
+                <input type="text" id="rasio" placeholder="Contoh: 3, √9, 2^2">
             </div>
             <div class="input-group">
                 <label>Suku ke-n (n):</label>
-                <div class="input-wrapper">
-                    <input type="number" id="n" placeholder="Contoh: 5" min="1">
-                    <span class="input-icon">🔢</span>
-                </div>
+                <input type="number" id="n" placeholder="Contoh: 5">
             </div>
             <button class="calc-btn" onclick="hitungBaris()">Hitung Suku ke-n → Un</button>
         </div>
@@ -52,68 +205,228 @@
         <div id="deret-tab" class="tab-content">
             <div class="input-group">
                 <label>Suku Pertama (a):</label>
-                <div class="input-wrapper">
-                    <input type="text" id="deret_a" placeholder="Contoh: 2, √4, 2^3, ³√8" autocomplete="off">
-                    <span class="input-icon">📝</span>
-                </div>
-                <small class="input-hint">Bisa gunakan: √4, sqrt(4), 2^3, ³√8, 4^(1/2)</small>
+                <input type="text" id="deret_a" placeholder="Contoh: 2, √4, 2^3">
             </div>
             <div class="input-group">
                 <label>Rasio (r):</label>
-                <div class="input-wrapper">
-                    <input type="text" id="deret_r" placeholder="Contoh: 3, √9, 2^2, ⁴√16" autocomplete="off">
-                    <span class="input-icon">📝</span>
-                </div>
-                <small class="input-hint">Bisa gunakan: √9, sqrt(9), 2^2, ⁴√16, 4^(1/2)</small>
+                <input type="text" id="deret_r" placeholder="Contoh: 3, √9, 2^2">
             </div>
             <div class="input-group">
                 <label>Jumlah Suku (n):</label>
-                <div class="input-wrapper">
-                    <input type="number" id="deret_n" placeholder="Contoh: 5" min="1">
-                    <span class="input-icon">🔢</span>
-                </div>
+                <input type="number" id="deret_n" placeholder="Contoh: 5">
             </div>
             <button class="calc-btn" onclick="hitungDeret()">Hitung Jumlah → Sn</button>
         </div>
 
         <!-- HASIL -->
-        <div id="hasil" class="hasil"></div>
+        <div id="hasil"></div>
 
-        <!-- SIMBOL MATEMATIKA -->
+        <!-- SIMBOL PANEL -->
         <div class="simbol-panel">
             <h4>📐 Tombol Cepat:</h4>
             <div class="simbol-grid">
-                <button class="simbol-btn" onclick="insertSimbol('√')" title="Akar Kuadrat">√</button>
-                <button class="simbol-btn" onclick="insertSimbol('^')" title="Pangkat">xⁿ</button>
-                <button class="simbol-btn" onclick="insertSimbol('sqrt(')" title="Akar Kuadrat (sqrt)">sqrt()</button>
-                <button class="simbol-btn" onclick="insertSimbol('(')" title="Kurung Buka">(</button>
-                <button class="simbol-btn" onclick="insertSimbol(')')" title="Kurung Tutup">)</button>
-                <button class="simbol-btn" onclick="insertSimbol('/')" title="Bagi">÷</button>
-                <button class="simbol-btn" onclick="insertSimbol('*')" title="Kali">×</button>
-                <button class="simbol-btn" onclick="insertSimbol('+')" title="Tambah">+</button>
+                <button class="simbol-btn" onclick="insertSimbol('√')">√</button>
+                <button class="simbol-btn" onclick="insertSimbol('^')">xⁿ</button>
+                <button class="simbol-btn" onclick="insertSimbol('sqrt(')">sqrt</button>
+                <button class="simbol-btn" onclick="insertSimbol('(')">(</button>
+                <button class="simbol-btn" onclick="insertSimbol(')')">)</button>
+                <button class="simbol-btn" onclick="insertSimbol('/')">÷</button>
+                <button class="simbol-btn" onclick="insertSimbol('*')">×</button>
+                <button class="simbol-btn" onclick="insertSimbol('+')">+</button>
             </div>
-            <p class="simbol-info"><strong>Tips:</strong> Gunakan √4 untuk akar kuadrat, 2^3 untuk pangkat, ³√8 untuk akar pangkat 3</p>
         </div>
 
+        <!-- CONTOH -->
         <div class="contoh">
-            <h3>💡 Contoh Perhitungan:</h3>
-            <div class="contoh-grid">
-                <div class="contoh-item">
-                    <strong>Baris (a=2, r=√4, n=5):</strong><br>
-                    Un = 2 × (√4)⁴ = 2 × 2⁴ = <strong>32</strong>
-                </div>
-                <div class="contoh-item">
-                    <strong>Deret (a=2, r=3, n=5):</strong><br>
-                    Sn = 2×(3⁵-1)/(3-1) = <strong>242</strong>
-                </div>
-                <div class="contoh-item">
-                    <strong>Akar & Pangkat:</strong><br>
-                    √16 = 4, 2^3 = 8, ³√27 = 3
-                </div>
-            </div>
+            <h3>💡 Contoh:</h3>
+            <p>√4 = 2 | 2^3 = 8 | ³√8 = 2</p>
         </div>
     </div>
 
-<script src="script.js"></script>
-</body>
-</html>
+    <!-- JAVASCRIPT LENGKAP -->
+    <script>
+        // ============ FUNGSI PARSING ============
+        function parseInput(input) {
+            if (!input || input.trim() === '') return NaN;
+            
+            var expr = input.trim();
+            expr = expr.replace(/\s+/g, '');
+            
+            // Handle √x → x^(1/2)
+            expr = expr.replace(/√(\d+(\.\d+)?)/g, '($1)^(1/2)');
+            
+            // Handle sqrt(x) → x^(1/2)
+            expr = expr.replace(/sqrt(\d+(\.\d+)?)/gi, '($1)^(1/2)');
+            
+            // Handle n√x → x^(1/n)
+            expr = expr.replace(/(\d+)√(\d+(\.\d+)?)/g, '($2)^(1/$1)');
+            
+            return evaluateMath(expr);
+        }
+
+        // ============ FUNGSI EVALUASI ============
+        function evaluateMath(expr) {
+            try {
+                var evalExpr = expr;
+                
+                // Handle a^b → Math.pow(a,b)
+                evalExpr = evalExpr.replace(/(\d+(\.\d+)?)\^(\d+(\.\d+)?|\$[^)]+\$|\d+\/\d+)/g, 
+                    function(match, base, _, exp) {
+                        var expValue = exp;
+                        
+                        if (exp.includes('/')) {
+                            var parts = exp.split('/');
+                            expValue = parseFloat(parts[0]) / parseFloat(parts[1]);
+                        } else if (exp.startsWith('(') && exp.endsWith(')')) {
+                            var inner = exp.slice(1, -1);
+                            if (/^[\d.]+$/.test(inner)) {
+                                expValue = inner;
+                            } else if (inner.includes('/')) {
+                                var parts = inner.split('/');
+                                expValue = parseFloat(parts[0]) / parseFloat(parts[1]);
+                            }
+                        }
+                        
+                        return 'Math.pow(' + base + ',' + expValue + ')';
+                    }
+                );
+                
+                // Validasi karakter
+                var allowedChars = '0123456789.+-*/()Mathpow ';
+                for (var i = 0; i < evalExpr.length; i++) {
+                    if (allowedChars.indexOf(evalExpr[i]) === -1 && evalExpr[i] !== ' ') {
+                        return NaN;
+                    }
+                }
+                
+                var result = new Function('return ' + evalExpr)();
+                
+                if (isNaN(result) || !isFinite(result)) {
+                    return NaN;
+                }
+                
+                return result;
+                
+            } catch (e) {
+                console.error("Error:", e);
+                return NaN;
+            }
+        }
+
+        // ============ SWITCH TAB ============
+        function switchTab(tabName) {
+            var buttons = document.querySelectorAll('.tab-btn');
+            var contents = document.querySelectorAll('.tab-content');
+            
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+            
+            var btnIndex = tabName === 'baris' ? 0 : 1;
+            buttons[btnIndex].classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            document.getElementById('hasil').innerHTML = '';
+        }
+
+        // ============ INSERT SIMBOL ============
+        function insertSimbol(sym) {
+            var inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
+            var activeInput = null;
+            
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i] === document.activeElement) {
+                    activeInput = inputs[i];
+                    break;
+                }
+            }
+            
+            if (!activeInput) {
+                var visibleInputs = document.querySelectorAll('.tab-content.active input');
+                if (visibleInputs.length > 0) {
+                    activeInput = visibleInputs[0];
+                }
+            }
+            
+            if (activeInput) {
+                var start = activeInput.selectionStart;
+                var end = activeInput.selectionEnd;
+                var val = activeInput.value;
+                activeInput.value = val.substring(0, start) + sym + val.substring(end);
+                activeInput.focus();
+                activeInput.setSelectionRange(start + sym.length, start + sym.length);
+            }
+        }
+
+        // ============ HITUNG BARIS ============
+        function hitungBaris() {
+            var aInput = document.getElementById('suku1').value;
+            var rInput = document.getElementById('rasio').value;
+            var n = parseInt(document.getElementById('n').value);
+            
+            var a = parseInput(aInput);
+            var r = parseInput(rInput);
+            
+            if (isNaN(a) || isNaN(r) || isNaN(n) || n <= 0) {
+                document.getElementById('hasil').innerHTML = 
+                    '<div style="background: #ffcccc; padding: 20px; margin: 20px; border-radius: 15px; border-left: 5px solid red;">' +
+                    '<h3 style="color: red; margin-bottom: 10px;">❌ Input Tidak Valid</h3>' +
+                    '<p>Masukkan angka yang valid! Contoh: √4, 2^3, ³√8</p>' +
+                    '</div>';
+                return;
+            }
+            
+            var un = a * Math.pow(r, n - 1);
+            
+            var penjelasan = 
+                '<div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; margin: 20px; border-radius: 15px;">' +
+                '<h3 style="text-align: center; margin-bottom: 20px;">📝 PENJELASAN</h3>' +
+                
+                '<div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; border-left: 4px solid gold;">' +
+                '<p><strong>✅ Diketahui:</strong></p>' +
+                '<p>a = ' + a + '</p>' +
+                '<p>r = ' + r + '</p>' +
+                '<p>n = ' + n + '</p>' +
+                '</div>' +
+                
+                '<div style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 10px;">' +
+                '<p><strong>📐 Rumus:</strong> Un = a × r<sup>n-1</sup></p>' +
+                '</div>' +
+                
+                '<div style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 10px;">' +
+                '<p><strong>🔢 Perhitungan:</strong></p>' +
+                '<p style="font-size: 1.2em;">U' + n + ' = ' + a + ' × ' + r + '<sup>' + (n-1) + '</sup></p>' +
+                '<p style="font-size: 1.2em;">U' + n + ' = ' + a + ' × ' + Math.pow(r, n-1).toFixed(4) + '</p>' +
+                '<p style="font-size: 1.4em; color: gold; font-weight: bold; margin-top: 10px;">U' + n + ' = ' + un.toFixed(4) + '</p>' +
+                '</div>' +
+                
+                '<div style="margin-top: 15px; padding: 15px; background: gold; border-radius: 10px; text-align: center;">' +
+                '<p style="font-size: 1.5em; color: #333; font-weight: bold;">🎯 JAWABAN: U' + n + ' = ' + un.toFixed(4) + '</p>' +
+                '</div>' +
+                '</div>';
+            
+            document.getElementById('hasil').innerHTML = penjelasan;
+        }
+
+        // ============ HITUNG DERET ============
+        function hitungDeret() {
+            var aInput = document.getElementById('deret_a').value;
+            var rInput = document.getElementById('deret_r').value;
+            var n = parseInt(document.getElementById('deret_n').value);
+            
+            var a = parseInput(aInput);
+            var r = parseInput(rInput);
+            
+            if (isNaN(a) || isNaN(r) || isNaN(n) || n <= 0) {
+                document.getElementById('hasil').innerHTML = 
+                    '<div style="background: #ffcccc; padding: 20px; margin: 20px; border-radius: 15px; border-left: 5px solid red;">' +
+                    '<h3 style="color: red; margin-bottom: 10px;">❌ Input Tidak Valid</h3>' +
+                    '<p>Masukkan angka yang valid! Contoh: √4, 2^3, ³√8</p>' +
+                    '</div>';
+                return;
+            }
+            
+            var sn,
