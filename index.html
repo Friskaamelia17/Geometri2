@@ -65,13 +65,20 @@
                 <small class="input-hint">Bisa gunakan: √9, sqrt(9), 2^2, ⁴√16, 4^(1/2)</small>
             </div>
             <div class="input-group">
-                <label>Jumlah Suku (n):</label>
+                <label>Cari Suku ke-n (n untuk Un):</label>
                 <div class="input-wrapper">
-                    <input type="number" id="deret_n" placeholder="Contoh: 5" min="1">
+                    <input type="number" id="deret_n_un" placeholder="Contoh: 5" min="1">
                     <span class="input-icon">🔢</span>
                 </div>
             </div>
-            <button class="calc-btn" onclick="hitungDeret()">Hitung Jumlah → Sn</button>
+            <div class="input-group">
+                <label>Jumlah n Suku Pertama (n untuk Sn):</label>
+                <div class="input-wrapper">
+                    <input type="number" id="deret_n_sn" placeholder="Contoh: 5" min="1">
+                    <span class="input-icon">🔢</span>
+                </div>
+            </div>
+            <button class="calc-btn" onclick="hitungDeret()">Hitung Un & Sn</button>
         </div>
 
         <div id="hasil" class="hasil"></div>
