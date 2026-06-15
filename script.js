@@ -41,6 +41,13 @@ function parseInput(input) {
     }
 }
 
+// Fungsi pembantu untuk membulatkan tampilan angka jika merupakan desimal panjang
+function formatDesimal(angka) {
+    if (isNaN(angka)) return "NaN";
+    // Jika angka bulat asli, biarkan bulat. Jika desimal, potong jadi 3 angka di belakang koma
+    return angka % 1 === 0 ? angka.toString() : Number(angka.toFixed(3)).toString();
+}
+
 function hitungBaris() {
     let aInput = document.getElementById("suku1").value;
     let rInput = document.getElementById("rasio").value;
@@ -62,22 +69,22 @@ function hitungBaris() {
     hasil.innerHTML = `
         <h2>Hasil Perhitungan Baris</h2>
         <b>Diketahui:</b><br>
-        a = ${aInput} (${a})<br>
-        r = ${rInput} (${r})<br>
+        a = ${aInput} (${formatDesimal(a)})<br>
+        r = ${rInput} (${formatDesimal(r)})<br>
         n = ${n}
         <br><br>
         <b>Rumus:</b><br>
         Un = a × r^(n-1)
         <br><br>
         <b>Penyelesaian:</b><br>
-        U${n} = ${a} × (${r})^(${n}-1)<br>
-        U${n} = ${a} × (${r})^${n-1}<br>
-        U${n} = ${un}
+        U${n} = ${formatDesimal(a)} × (${formatDesimal(r)})^(${n}-1)<br>
+        U${n} = ${formatDesimal(a)} × (${formatDesimal(r)})^${n-1}<br>
+        U${n} = ${formatDesimal(un)}
         <br><br>
         <b>Akar Suku ke-${n}</b><br>
-        √U${n} = ${isNaN(akar) ? "Hasil bernilai imajiner (Suku Un Negatif)" : akar.toFixed(2)}
+        √U${n} = ${isNaN(akar) ? "Hasil bernilai imajiner (Suku Un Negatif)" : formatDesimal(akar)}
         <br><br>
-        <h3>Jawaban = ${un}</h3>
+        <h3>Jawaban = ${formatDesimal(un)}</h3>
     `;
 }
 
@@ -101,7 +108,7 @@ function hitungDeret() {
 
     // --- 1. Perhitungan Suku ke-n (Un) menggunakan nUn ---
     let un = a * Math.pow(r, nUn - 1);
-    let langkahUn = `U${nUn} = ${a} × (${r})^(${nUn}-1) = ${un}`;
+    let langkahUn = `U${nUn} = ${formatDesimal(a)} × (${formatDesimal(r)})^(${nUn}-1) = ${formatDesimal(un)}`;
 
     // --- 2. Perhitungan Jumlah Suku (Sn) menggunakan nSn ---
     let sn;
@@ -109,14 +116,20 @@ function hitungDeret() {
 
     if (r === 1) {
         sn = nSn * a;
-        langkahSn = `S${nSn} = ${nSn} × ${a} = ${sn}`;
+        langkahSn = `S${nSn} = ${nSn} × ${formatDesimal(a)} = ${formatDesimal(sn)}`;
     } else {
         sn = (a * (Math.pow(r, nSn) - 1)) / (r - 1);
+        
+        let rn = Math.pow(r, nSn);
+        let rnMinus1 = rn - 1;
+        let rMinus1 = r - 1;
+        let pembilangAtas = a * rnMinus1;
+
         langkahSn = `
-            S${nSn} = (${a} × (${r}^${nSn} - 1)) / (${r} - 1)<br>
-            S${nSn} = (${a} × (${Math.pow(r, nSn)} - 1)) / (${r - 1})<br>
-            S${nSn} = (${a * (Math.pow(r, nSn) - 1)}) / (${r - 1})<br>
-            S${nSn} = ${sn}
+            S${nSn} = (${formatDesimal(a)} × (${formatDesimal(r)}^${nSn} - 1)) / (${formatDesimal(r)} - 1)<br>
+            S${nSn} = (${formatDesimal(a)} × (${formatDesimal(rn)} - 1)) / (${formatDesimal(rMinus1)})<br>
+            S${nSn} = (${formatDesimal(pembilangAtas)}) / (${formatDesimal(rMinus1)})<br>
+            S${nSn} = ${formatDesimal(sn)}
         `;
     }
 
@@ -124,8 +137,8 @@ function hitungDeret() {
     hasil.innerHTML = `
         <h2>Hasil Perhitungan Deret Geometri</h2>
         <b>Diketahui:</b><br>
-        a = ${aInput} (${a})<br>
-        r = ${rInput} (${r})<br>
+        a = ${aInput} (${formatDesimal(a)})<br>
+        r = ${rInput} (${formatDesimal(r)})<br>
         n (untuk Un) = ${nUn}<br>
         n (untuk Sn) = ${nSn}
         <br><br>
@@ -143,8 +156,8 @@ function hitungDeret() {
         <br><br>
         <hr>
         <h3>Hasil Akhir:</h3>
-        <b>Suku ke-${nUn} (U${nUn}) = ${un}</b><br>
-        <b>Jumlah ${nSn} Suku (S${nSn}) = ${sn}</b>
+        <b>Suku ke-${nUn} (U${nUn}) = ${formatDesimal(un)}</b><br>
+        <b>Jumlah ${nSn} Suku (S${nSn}) = ${formatDesimal(sn)}</b>
     `;
 }
 
