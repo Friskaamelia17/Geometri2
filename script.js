@@ -96,15 +96,20 @@ function hitungDeret() {
         return;
     }
 
+    // --- Perhitungan Suku ke-n (Un) pada Deret ---
+    let un = a * Math.pow(r, n - 1);
+    let langkahUn = `U${n} = ${a} × (${r})^(${n}-1) = ${un}`;
+
+    // --- Perhitungan Jumlah Suku (Sn) ---
     let sn;
-    let langkahKerja = "";
+    let langkahSn = "";
 
     if (r === 1) {
         sn = n * a;
-        langkahKerja = `S${n} = ${n} × ${a} = ${sn}`;
+        langkahSn = `S${n} = ${n} × ${a} = ${sn}`;
     } else {
         sn = (a * (Math.pow(r, n) - 1)) / (r - 1);
-        langkahKerja = `
+        langkahSn = `
             S${n} = (${a} × (${r}^${n} - 1)) / (${r} - 1)<br>
             S${n} = (${a} × (${Math.pow(r, n)} - 1)) / (${r - 1})<br>
             S${n} = (${a * (Math.pow(r, n) - 1)}) / (${r - 1})<br>
@@ -112,20 +117,32 @@ function hitungDeret() {
         `;
     }
 
+    // --- Menampilkan Hasil Gabungan Un dan Sn ---
     hasil.innerHTML = `
-        <h2>Hasil Perhitungan Deret</h2>
+        <h2>Hasil Perhitungan Deret Geometri</h2>
+        <b>Diminta mencari:</b> Suku ke-${n} (U${n}) dan Jumlah ${n} suku pertama (S${n})<br><br>
+        
         <b>Diketahui:</b><br>
         a = ${aInput} (${a})<br>
         r = ${rInput} (${r})<br>
         n = ${n}
         <br><br>
-        <b>Rumus:</b><br>
-        ${r === 1 ? 'Sn = n × a (Rasio = 1)' : 'Sn = a × (r^n - 1) / (r - 1)'}
-        <br><br>
+        
+        <h3>1. Perhitungan Suku ke-${n} (U${n})</h3>
+        <b>Rumus:</b> Un = a × r^(n-1)<br>
         <b>Penyelesaian:</b><br>
-        ${langkahKerja}
+        ${langkahUn}
         <br><br>
-        <h3>Jawaban = ${sn}</h3>
+        
+        <h3>2. Perhitungan Jumlah ${n} Suku Pertama (S${n})</h3>
+        <b>Rumus:</b> ${r === 1 ? 'Sn = n × a' : 'Sn = a × (r^n - 1) / (r - 1)'}<br>
+        <b>Penyelesaian:</b><br>
+        ${langkahSn}
+        <br><br>
+        <hr>
+        <h3>Hasil Akhir:</h3>
+        <b>Suku ke-${n} (U${n}) = ${un}</b><br>
+        <b>Jumlah ${n} Suku (S${n}) = ${sn}</b>
     `;
 }
 
