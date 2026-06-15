@@ -84,70 +84,71 @@ function hitungBaris() {
 function hitungDeret() {
     let aInput = document.getElementById("deret_a").value;
     let rInput = document.getElementById("deret_r").value;
-    let nInput = document.getElementById("deret_n").value;
+    let nUnInput = document.getElementById("deret_n_un").value;
+    let nSnInput = document.getElementById("deret_n_sn").value;
 
-    let n = Number(nInput);
     let a = parseInput(aInput);
     let r = parseInput(rInput);
+    let nUn = Number(nUnInput);
+    let nSn = Number(nSnInput);
     let hasil = document.getElementById("hasil");
 
-    if (isNaN(a) || isNaN(r) || nInput === "" || n < 1) {
+    // Validasi input
+    if (isNaN(a) || isNaN(r) || nUnInput === "" || nSnInput === "" || nUn < 1 || nSn < 1) {
         hasil.innerHTML = "❌ Input belum benar atau nilai n harus minimal 1";
         return;
     }
 
-    // --- Perhitungan Suku ke-n (Un) pada Deret ---
-    let un = a * Math.pow(r, n - 1);
-    let langkahUn = `U${n} = ${a} × (${r})^(${n}-1) = ${un}`;
+    // --- Perhitungan Suku ke-n (Un) ---
+    let un = a * Math.pow(r, nUn - 1);
+    let langkahUn = `U${nUn} = ${a} × (${r})^(${nUn}-1) = ${un}`;
 
     // --- Perhitungan Jumlah Suku (Sn) ---
     let sn;
     let langkahSn = "";
 
     if (r === 1) {
-        sn = n * a;
-        langkahSn = `S${n} = ${n} × ${a} = ${sn}`;
+        sn = nSn * a;
+        langkahSn = `S${nSn} = ${nSn} × ${a} = ${sn}`;
     } else {
-        sn = (a * (Math.pow(r, n) - 1)) / (r - 1);
+        sn = (a * (Math.pow(r, nSn) - 1)) / (r - 1);
         langkahSn = `
-            S${n} = (${a} × (${r}^${n} - 1)) / (${r} - 1)<br>
-            S${n} = (${a} × (${Math.pow(r, n)} - 1)) / (${r - 1})<br>
-            S${n} = (${a * (Math.pow(r, n) - 1)}) / (${r - 1})<br>
-            S${n} = ${sn}
+            S${nSn} = (${a} × (${r}^${nSn} - 1)) / (${r} - 1)<br>
+            S${nSn} = (${a} × (${Math.pow(r, nSn)} - 1)) / (${r - 1})<br>
+            S${nSn} = (${a * (Math.pow(r, nSn) - 1)}) / (${r - 1})<br>
+            S${nSn} = ${sn}
         `;
     }
 
-    // --- Menampilkan Hasil Gabungan Un dan Sn ---
+    // --- Menampilkan Hasil Gabungan ---
     hasil.innerHTML = `
         <h2>Hasil Perhitungan Deret Geometri</h2>
-        <b>Diminta mencari:</b> Suku ke-${n} (U${n}) dan Jumlah ${n} suku pertama (S${n})<br><br>
-        
         <b>Diketahui:</b><br>
         a = ${aInput} (${a})<br>
         r = ${rInput} (${r})<br>
-        n = ${n}
+        n (untuk Un) = ${nUn}<br>
+        n (untuk Sn) = ${nSn}
         <br><br>
         
-        <h3>1. Perhitungan Suku ke-${n} (U${n})</h3>
+        <h3>1. Perhitungan Suku ke-${nUn} (U${nUn})</h3>
         <b>Rumus:</b> Un = a × r^(n-1)<br>
         <b>Penyelesaian:</b><br>
         ${langkahUn}
         <br><br>
         
-        <h3>2. Perhitungan Jumlah ${n} Suku Pertama (S${n})</h3>
+        <h3>2. Perhitungan Jumlah ${nSn} Suku Pertama (S${nSn})</h3>
         <b>Rumus:</b> ${r === 1 ? 'Sn = n × a' : 'Sn = a × (r^n - 1) / (r - 1)'}<br>
         <b>Penyelesaian:</b><br>
         ${langkahSn}
         <br><br>
         <hr>
         <h3>Hasil Akhir:</h3>
-        <b>Suku ke-${n} (U${n}) = ${un}</b><br>
-        <b>Jumlah ${n} Suku (S${n}) = ${sn}</b>
+        <b>Suku ke-${nUn} (U${nUn}) = ${un}</b><br>
+        <b>Jumlah ${nSn} Suku (S${nSn}) = ${sn}</b>
     `;
 }
 
 function insertSimbol(simbol) {
-    // Jika user belum memfokuskan form manapun, arahkan otomatis ke input paling pertama
     if (!lastFocusedInput) {
         lastFocusedInput = document.querySelector("input");
     }
@@ -157,30 +158,24 @@ function insertSimbol(simbol) {
         let endPos = lastFocusedInput.selectionEnd;
         let textValue = lastFocusedInput.value;
 
-        // Menyisipkan simbol tepat di koordinat posisi kursor aktif
         lastFocusedInput.value = textValue.substring(0, startPos) + simbol + textValue.substring(endPos);
         
-        // Mengembalikan fokus kursor ke input box setelah tombol ditekan
         lastFocusedInput.focus();
         lastFocusedInput.selectionStart = lastFocusedInput.selectionEnd = startPos + simbol.length;
     }
 }
 
 function switchTab(tab) {
-    // Sembunyikan semua container isi tab
     document.querySelectorAll(".tab-content").forEach(function(x) {
         x.classList.remove("active");
     });
 
-    // Aktifkan tab yang dipilih
     document.getElementById(tab + "-tab").classList.add("active");
 
-    // Reset status visual aktif pada seluruh tombol tab menu
     document.querySelectorAll(".tab-btn").forEach(function(btn) {
         btn.classList.remove("active");
     });
 
-    // Tambahkan kembali kelas aktif pada tombol menu yang baru diklik
     const buttons = document.querySelectorAll(".tab-btn");
     if (tab === 'baris') {
         buttons[0].classList.add("active");
